@@ -112,7 +112,7 @@ public class FasterIO extends PrintWriter {
         return ans;
     }
 
-    private void openData(String filename) {
+    public void openData(String filename) {
         try {
             setInputStream(new FileInputStream("Inputs/" + filename));
         } catch (IOException e) {
