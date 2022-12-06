@@ -1,9 +1,3 @@
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * Refactored solutions to the 2022 Advent of code challenge
  */
@@ -23,6 +17,9 @@ public class AdventOfCode2022 {
         io.println("solved in :" + (System.currentTimeMillis()-lastTime) + " ms\n");
         lastTime = System.currentTimeMillis();
         io.print(day3());
+        io.println("solved in :" + (System.currentTimeMillis()-lastTime) + " ms\n");
+        lastTime = System.currentTimeMillis();
+        io.print(day4());
         io.println("solved in :" + (System.currentTimeMillis()-lastTime) + " ms\n");
         io.flush();
     }
@@ -171,5 +168,31 @@ public class AdventOfCode2022 {
         }
     }
 
-
+    /**
+     * Cleaned up the conversion of the input. Maybe a version of Cohen-Sutherland-clipping
+     * could be used to make the conditions nicer?
+     */
+    private String day4() {
+        io.openData("2022/input04");
+        int count1 = 0;
+        int count2 = 0;
+        while (io.hasMoreTokens()) {
+            String[] pairs = io.getLine().split(",");
+            String[] firstPart = pairs[0].split("-");
+            String[] secondPart = pairs[1].split("-");
+            int[] elf1 = {Integer.parseInt(firstPart[0]), Integer.parseInt(firstPart[1])};
+            int[] elf2 = {Integer.parseInt(secondPart[0]), Integer.parseInt(secondPart[1])};
+            if (elf1[0] <= elf2[0] && elf1[1] >= elf2[1] ||
+                    elf1[0] >= elf2[0] && elf1[1] <= elf2[1]) {
+                count1++;
+            }
+            if (elf1[0] <= elf2[0] && elf1[1] >= elf2[0] ||
+                    elf1[0] <= elf2[1] && elf1[1] >= elf2[1] ||
+                    elf2[0] <= elf1[0] && elf2[1] >= elf1[0] ||
+                    elf2[0] <= elf1[1] && elf2[1] >= elf1[1]) {
+                count2++;
+            }
+        }
+        return "Day 4 part 1: Number of pairs that are fully contained is " + count1 + "\nDay 4 part 2: Number of pairs that cover is " + count2 + "\n";
+    }
 }
