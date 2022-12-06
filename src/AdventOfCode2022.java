@@ -41,12 +41,12 @@ public class AdventOfCode2022 {
     }
 
     /**
-     * Quick insertion into top-three
+     * Quick insertion into fixed-size array
      */
     private void fastSort(int sum, int[] max) {
-        if (sum < max[2])
+        if (sum < max[max.length-1])
             return;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < max.length-1 ; i++) {
             if (max[i] < sum) {
                 insert(max, i, sum);
                 break;
