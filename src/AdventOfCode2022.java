@@ -1,5 +1,8 @@
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Refactored solutions to the 2022 Advent of code challenge
@@ -17,6 +20,9 @@ public class AdventOfCode2022 {
         io.println("solved in :" + (System.currentTimeMillis()-lastTime) + " ms\n");
         lastTime = System.currentTimeMillis();
         io.print(day2());
+        io.println("solved in :" + (System.currentTimeMillis()-lastTime) + " ms\n");
+        lastTime = System.currentTimeMillis();
+        io.print(day3());
         io.println("solved in :" + (System.currentTimeMillis()-lastTime) + " ms\n");
         io.flush();
     }
@@ -108,4 +114,62 @@ public class AdventOfCode2022 {
         }
         return (player1+1)%3 + 1;
     }
+
+    /**
+     * Combined and refactored solutions. Using methods to clarify.
+     */
+    private String day3() {
+        io.openData("2022/input03");
+        String[] input = new String[3];
+        int score1 = 0;
+        int score2 = 0;
+        while(io.hasMoreTokens()) {
+            for (int i = 0 ; i < 3 ; i++) {
+                input[i] = io.getLine();
+                score1 += getScore(findDuplicate(input[i]));
+            }
+            score2 += getScore(findBadge(input));
+        }
+        return "Day 3 part 1: The sum of priorities is " + score1 + "\nDay 3 part 2: The sum of priorities is " + score2 + "\n";
+    }
+
+    /**
+     * Split string and loop through halves looking for a duplicate.
+     * Tried a set solution with intersection but it was slower
+     */
+    private char findDuplicate(String rucksack) {
+        String secondCompartment = rucksack.substring(rucksack.length()/2);
+        for (int i = 0 ; i < rucksack.length()/2 ; i++) {
+            if (secondCompartment.contains(""+rucksack.charAt(i))) {
+                return rucksack.charAt(i);
+            }
+        }
+        return ' ';
+    }
+
+    /**
+     * Find a letter that is contained in all three rucksacks
+     */
+    private char findBadge(String[] rucksacks) {
+        for (int i = 0 ; i < rucksacks[0].length() ; i++) {
+            char letterToCheck = rucksacks[0].charAt(i);
+            if (rucksacks[1].contains(""+letterToCheck) && rucksacks[2].contains(""+letterToCheck)) {
+                return letterToCheck;
+            }
+        }
+        return ' ';
+    }
+
+    /**
+     * Calculates the score from each package
+     */
+    private int getScore(char c) {
+        if (c < 'a') {
+            return c -'A' +27;
+        } else {
+            return c - 'a' +1;
+        }
+    }
+
+
 }
